@@ -54,6 +54,7 @@ void ReadText();
 void Set();
 void ResetMaze(int w,int l);
 void PrintMaze(int w,int l);
+void over(); 
 int Maze[100][100];
 
 int main(){
@@ -106,6 +107,7 @@ void MainMenu(){
 	}
 	return;
 }
+
 void ResetMaze(int w,int l){
 	for(int i=0;i<w;i++){
 		for(int j=0;j<l;j++){
@@ -150,9 +152,20 @@ void Set(){
 	
 	return;
 }
+
+void over(){
+	printf("    ■■■      ■      ■      ■■■■      ■■■■\n");
+	printf("  ■      ■    ■      ■      ■            ■    ■\n");
+	printf("  ■      ■      ■  ■        ■■■■      ■■■■\n");
+	printf("  ■      ■      ■  ■        ■            ■■\n");
+	printf("    ■■■          ■          ■■■■      ■  ■\n");
+	return;
+}
+
 Position ChangePos(Position &pos,direction dir){
-	if(pos.x<0||pos.y<0) {
-		printf("该迷宫没有解!!!");
+	if(pos.x<0||pos.y<0) {	
+		over(); 
+		printf("该迷宫没有解!!!\n");
 		system("pause");
 		MainMenu();
 	}
