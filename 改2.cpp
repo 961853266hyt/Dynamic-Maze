@@ -55,6 +55,7 @@ void Set();
 void ResetMaze(int w,int l);
 void PrintMaze(int w,int l);
 void over(); 
+void HelpMenu();
 int Maze[100][100];
 
 int main(){
@@ -68,7 +69,7 @@ void MainMenu(){
 	Position Start,End;
 	ptostack s=CreatStack();
 	printf("\n 		欢迎来到迷宫游戏！\n"); 
-	printf("		1、自定义迷宫\n 		2、随机生成迷宫\n 		3、从文件中导入迷宫\n 		4、设置\n		0、退出\n		请选择数字:");
+	printf("\t\t1、自定义迷宫\n\t\t2、随机生成迷宫\n\t\t3、从文件中导入迷宫\n\t\t4、设置\n\t\t5、帮助\n\t\t0、退出\n\n\n\t\t请选择数字:");
 	scanf("%d",&choice);
 	switch(choice){
 		case 1: system("cls");
@@ -102,12 +103,30 @@ void MainMenu(){
 		case 3:	ReadText();
 				break; 
 		case 4:	Set();
-					
+		case 5: HelpMenu();			
 		case 0:	break;	 
 	}
 	return;
 }
 
+void HelpMenu(){
+	system("cls");
+	printf("\n\t\t********帮助菜单********\n");
+	int choice;
+	printf("\t\t1、如何从文件中导入迷宫?\n\t\t2、迷宫中显示的*代表什么?\n\t\t3、关于作品\n\t\t0、返回\n");
+	scanf("%d",&choice);
+	switch(choice){
+		case 1:printf("迷宫信息以二维数组的形式存放在一个文本文件中，");
+			   printf("您只需修改其中的数值即可创造您自己的迷宫。（1代表墙，0代表通路，6和7分别代表起点和终点）");
+			   break;
+		case 2:printf("*代表你已经走过并折返的路径");break;
+		case 3:printf("这是一个关于动态走迷宫的小程序，是本人在学校数据结构课程中的一份作业。\n我在GitHub中记录了一些调试改进的过程。附上链接https://github.com/961853266hyt/Dynamic-Maze\n");
+		case 0:MainMenu();break;
+	}
+	system("pause");
+	HelpMenu();
+	return;
+}
 void ResetMaze(int w,int l){
 	for(int i=0;i<w;i++){
 		for(int j=0;j<l;j++){
@@ -371,6 +390,7 @@ ptostack push(ptostack s,ElemType data){
 
 ElemType pop(ptostack s){
 	if(IsEmpty(s)){
+		over();
 		printf("对不起，不存在路径！！！");
 	}
 	return *(--s->top);
@@ -385,4 +405,8 @@ Status IsEmpty(ptostack s){
 	return 0;
 } 
 
-
+/*
+姓名：胡逸藤
+学号：18041513
+github链接:https://github.com/961853266hyt/Dynamic-Maze(欢迎提出意见)
+*/
