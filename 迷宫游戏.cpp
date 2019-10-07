@@ -51,10 +51,10 @@ void CreatMaze(int w,int l);
 void PrintStack(ptostack s); 
 void MainMenu();
 void ReadText();
-void Set();
 void ResetMaze(int w,int l);
 void PrintMaze(int w,int l);
 void over(); 
+void win();
 void HelpMenu();
 int Maze[100][100];
 
@@ -69,7 +69,7 @@ void MainMenu(){
 	Position Start,End;
 	ptostack s=CreatStack();
 	printf("\n\t***********迷宫游戏***********\n"); 
-	printf("\t\t1、自定义迷宫\n\t\t2、随机生成迷宫\n\t\t3、生成后台设置的迷宫\n\t\t4、设置\n\t\t5、帮助\n\t\t0、退出\n\t******************************\n\n\t\t请选择数字: ");
+	printf("\t\t1、自定义迷宫\n\t\t2、随机生成迷宫\n\t\t3、生成后台设置的迷宫\n\t\t4、帮助\n\t\t0、退出\n\t******************************\n\n\t\t请选择数字: ");
 	scanf("%d",&choice);
 	switch(choice){
 		case 1: system("cls");
@@ -103,8 +103,7 @@ void MainMenu(){
 			    break;
 		case 3:	ReadText();
 				break; 
-		case 4:	Set();
-		case 5: HelpMenu();			
+		case 4: HelpMenu();			
 		case 0:	break;	 
 	}
 	return;
@@ -116,7 +115,8 @@ void HelpMenu(){
 	int choice;
 	printf("\t\t1、如何从文件中导入迷宫?\n\t\t2、迷宫中显示的*代表什么?\n\t\t3、关于作品\n\t\t0、返回\n");
 	scanf("%d",&choice);
-	switch(choice){
+	switch(choice)
+	{
 		case 1:printf("迷宫信息以二维数组的形式存放在一个文本文件中，\n");
 			   printf("您只需修改其中的数值即可创造您自己的迷宫。（1代表墙，0代表通路，6和7分别代表起点和终点）");
 			   break;
@@ -128,25 +128,18 @@ void HelpMenu(){
 	HelpMenu();
 	return;
 }
-void ResetMaze(int w,int l){
-	for(int i=0;i<w;i++){
-		for(int j=0;j<l;j++){
-			Maze[i][j]=0;
-		}
-	}
-	return;
-}
+
 void ReadText(){
 	 FILE* fp;
 	 int w,l;
 	 Position Start,End;
 	 ptostack s=CreatStack();
-	 if((fp=fopen(path,"r"))==NULL){
+	 if((fp=fopen(path,"r"))==NULL)
+	 {
 	 	printf("文件打开失败！！！\n");
 		system("pause");
 		MainMenu(); 
 	 }
-
 	 fscanf(fp,"%d%d",&w,&l);
 	 for(int i=0;i<w;i++){
 	 	for(int j=0;j<l;j++){
@@ -163,16 +156,6 @@ void ReadText(){
 	 FindPath(s,Start,End,w,l);
 	 return;
 }
-
-void Set(){
-	
-	
-	
-	
-	
-	return;
-}
-
 void over(){
 	printf("    ■■■      ■      ■      ■■■■      ■■■■\n");
 	printf("  ■      ■    ■      ■      ■            ■    ■\n");
@@ -182,26 +165,36 @@ void over(){
 	return;
 }
 
+void win(){
+	printf("  ■            ■   ■   ■■    ■\n");
+	printf("  ■     ■     ■        ■ ■   ■\n");
+	printf("   ■   ■■   ■    ■   ■  ■  ■     \n");
+	printf("    ■ ■  ■ ■     ■   ■   ■ ■       \n");
+	printf("     ■      ■      ■   ■    ■■     \n");
+	return;
+}
 Position ChangePos(Position &pos,direction dir){
-	if(pos.x<0||pos.y<0) {	
+	if(pos.x<0||pos.y<0)
+	{	
 		over(); 
 		printf("该迷宫没有解!!!\n");
 		system("pause");
 		MainMenu();
 	}
-	switch(dir){
+	switch(dir)
+	{
 		case north:pos.x-=1;break;
 		case west:pos.y-=1;break;
 		case south:pos.x+=1;break;
 		case east:pos.y+=1;break;
 	}
-
 	return pos;
 }
 void PrintStack(ptostack s){
 	ElemType* t=s->bottom;
 	information info;
-	while(t<s->top){
+	while(t<s->top)
+	{
 		info=*t;
 		printf("<%d,%d> ",info.pos.x,info.pos.y);
 		t++;
@@ -210,23 +203,28 @@ void PrintStack(ptostack s){
 }
 void PrintMaze(int w,int l){
 	system("cls");
-	for(int i=0;i<w;i++){
-		if(i==0) {
+	for(int i=0;i<w;i++)
+	{
+		if(i==0)
+		{
 			printf("  ");
-			for(int z=0;z<l;z++){ 
+			for(int z=0;z<l;z++)
+			{ 
 				if(z<10) 
 					printf("%d ",z);		 //打印横坐标 
 				else 
 					printf("%d",z);
-				} 
+			} 
 			printf("\n");
 		}
 		if(i<10)
 			printf("%d ",i);            //打印纵坐标 
 		else 
 			printf("%d",i); 
-		for(int j=0;j<l;j++){			
-			switch(Maze[i][j]){
+		for(int j=0;j<l;j++)
+		{			
+			switch(Maze[i][j])
+			{
 				case wall:printf("%c%c",0xa8,0x80);break;
 				case pass:printf("  ",0xa8,0x80);break;
 				case north:printf("↑");break;
@@ -237,30 +235,31 @@ void PrintMaze(int w,int l){
             	case end:printf("终");break;
             	case back:printf("* ");break;
             	case Exit:printf("终");break;
-			}
-			
+			}		
 		}
 		printf("\n");		
 	}
 	return;
 }
-
 void CreatMaze(int w,int l){
 	int num;	
 	srand(time(NULL));									
 	//生成周围一圈的墙 
-	ResetMaze(w,l);
-	for(int i=0;i<w;i++){
-		if(i==0||i==w-1){
-			for(int j=0;j<l;j++){	
+	for(int i=0;i<w;i++)
+	{
+		if(i==0||i==w-1)
+		{
+			for(int j=0;j<l;j++)
+			{	
 				Maze[i][j]=wall;
 			}
 		}		
-		else{
+		else
+		{
 			Maze[i][0]=wall;
 			Maze[i][l-1]=wall;
-			
-			for(int j=1;j<l-1;j++){
+			for(int j=1;j<l-1;j++)
+			{
 				num=rand()%100+1;
 				if(num<=prop) Maze[i][j]=wall;
 				else Maze[i][j]=pass;
@@ -274,32 +273,31 @@ void CreatMaze(int w,int l){
 	PrintMaze(w,l);
 	return;
 }
-
 enum direction FindDir(Position pos){
     if(Maze[pos.x][pos.y+1]==pass||Maze[pos.x][pos.y+1]==end) return east; 
     if(Maze[pos.x+1][pos.y]==pass||Maze[pos.x+1][pos.y]==end) return south;
     if(Maze[pos.x][pos.y-1]==pass||Maze[pos.x][pos.y-1]==end) return west;
 	if(Maze[pos.x-1][pos.y]==pass||Maze[pos.x-1][pos.y]==end) return north;          
 }
-
 Status FindPath(ptostack s,Position start,Position stop,int w,int l){
 	Position currpos;          //当前位置坐标 
 	information info;          //记录探索路径的过程 
 	currpos=start;
 	int step=1;
-	ptostack reverse=CreatStack();
-	while(1){
-		if(currpos.x==start.x&&currpos.y==start.y&&step==1){   
+	while(1)
+	{
+		if(currpos.x==start.x&&currpos.y==start.y&&step==1)
+		{   
 			info.dir=FindDir(currpos);            
 			info.step=step++;
 			info.pos=currpos;
 			push(s,info);
-		
 		}
 		Maze[currpos.x][currpos.y]=(int)info.dir;
 		currpos=ChangePos(currpos,info.dir);         //确定当前的位置 
 		
-		if(Maze[currpos.x][currpos.y]==end){   //如果找到出口 
+		if(Maze[currpos.x][currpos.y]==end)
+		{   //如果找到出口 
 			info.step=step;
 			info.pos=currpos;
 			push(s,info);
@@ -307,20 +305,23 @@ Status FindPath(ptostack s,Position start,Position stop,int w,int l){
 			system("cls");
             printf("\n");
             PrintMaze(w,l);
+            win();                   
             printf("恭喜您找到出口：\n");
             PrintStack(s);
             printf("\n您共用了%d步\n",step); 
 			break;
 		}
 		
-		if(Maze[currpos.x][currpos.y]==pass){   //若当前位置可通 
+		if(Maze[currpos.x][currpos.y]==pass)
+		{   //若当前位置可通 
 			info.step=step++;
 			info.pos=currpos;
 			info.dir=FindDir(currpos);
 			push(s,info);			
 		}
 		
-		else{              //若当前方块不可通 
+		else
+		{              //若当前方块不可通 
 			info=pop(s);
             currpos=info.pos;
             step=info.step-1;
@@ -368,7 +369,6 @@ Status FindPath(ptostack s,Position start,Position stop,int w,int l){
 	MainMenu();
 	return 0; 
 }
-
 //关于栈的部分 
 ptostack CreatStack(){
 	ptostack s=(ptostack)malloc(sizeof(sqstack));
@@ -377,9 +377,9 @@ ptostack CreatStack(){
 	s->stacksize=Stack_Size;
 	return s;
 }
-
 ptostack push(ptostack s,ElemType data){
-	if(s->top-s->bottom>=s->stacksize){
+	if(s->top-s->bottom>=s->stacksize)
+	{
 		s->bottom=(ElemType*)realloc(s->bottom,(s->stacksize+StackIncrement)*sizeof(ElemType));
 		s->top=s->bottom+s->stacksize;
 		s->stacksize+=StackIncrement;
@@ -390,7 +390,8 @@ ptostack push(ptostack s,ElemType data){
 }
 
 ElemType pop(ptostack s){
-	if(IsEmpty(s)){
+	if(IsEmpty(s))
+	{
 		over();
 		printf("对不起，不存在路径！！！");
 	}
